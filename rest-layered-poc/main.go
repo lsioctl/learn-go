@@ -4,12 +4,12 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/lsioctl/rest-layered-poc/dal"
+	"github.com/lsioctl/rest-layered-poc/service"
 )
 
 // getAlbums responds with the list of all albums as JSON.
 func getAlbums(c *gin.Context) {
-	c.IndentedJSON(http.StatusOK, dal.GetAlbumList())
+	c.IndentedJSON(http.StatusOK, service.GetAlbumList())
 }
 
 // postAlbums adds an album from JSON received in the request body.
@@ -32,7 +32,7 @@ func getAlbums(c *gin.Context) {
 func getAlbumByID(c *gin.Context) {
 	id := c.Param("id")
 
-	album, err := dal.GetAlbumByID(id)
+	album, err := service.GetAlbumByID(id)
 
 	if err != nil {
 		c.IndentedJSON(http.StatusNotFound, gin.H{"message": "album not found"})
