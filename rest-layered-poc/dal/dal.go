@@ -1,29 +1,25 @@
 package dal
 
-import "errors"
+import (
+	"errors"
 
-// album represents data about a record album.
-type Album struct {
-	ID     string  `json:"id"`
-	Title  string  `json:"title"`
-	Artist string  `json:"artist"`
-	Price  float64 `json:"price"`
-}
+	"github.com/lsioctl/rest-layered-poc/dto"
+)
 
 // albums slice to seed record album data.
-var albums = []Album{
+var albums = []dto.Album{
 	{ID: "1", Title: "Blue Train", Artist: "John Coltrane", Price: 56.99},
 	{ID: "2", Title: "Jeru", Artist: "Gerry Mulligan", Price: 17.99},
 	{ID: "3", Title: "Sarah Vaughan and Clifford Brown", Artist: "Sarah Vaughan", Price: 39.99},
 }
 
-func GetAlbumList() []Album {
+func GetAlbumList() []dto.Album {
 	return albums
 }
 
-func GetAlbumByID(id string) (Album, error) {
+func GetAlbumByID(id string) (dto.Album, error) {
 	if id == "" {
-		return Album{}, errors.New("empty id")
+		return dto.Album{}, errors.New("empty id")
 	}
 
 	// Loop over the list of albums, looking for
@@ -34,5 +30,11 @@ func GetAlbumByID(id string) (Album, error) {
 		}
 	}
 
-	return Album{}, errors.New("not found")
+	return dto.Album{}, errors.New("not found")
+}
+
+// TODO: do not like the prefix
+func CreateAlbum(album dto.Album) {
+	// Add the new album to the slice.
+	albums = append(albums, album)
 }
