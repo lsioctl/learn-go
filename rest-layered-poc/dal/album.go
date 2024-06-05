@@ -2,6 +2,7 @@ package dal
 
 import (
 	"errors"
+	"fmt"
 
 	"github.com/lsioctl/rest-layered-poc/dto"
 )
@@ -13,11 +14,12 @@ var albums = []dto.Album{
 	{ID: "3", Title: "Sarah Vaughan and Clifford Brown", Artist: "Sarah Vaughan", Price: 39.99},
 }
 
-func GetAlbumList() []dto.Album {
+func (dal *dal) GetAlbumList() []dto.Album {
+	fmt.Println(dal.db)
 	return albums
 }
 
-func GetAlbumByID(id string) (dto.Album, error) {
+func (*dal) GetAlbumByID(id string) (dto.Album, error) {
 	if id == "" {
 		return dto.Album{}, errors.New("empty id")
 	}
@@ -34,7 +36,7 @@ func GetAlbumByID(id string) (dto.Album, error) {
 }
 
 // TODO: do not like the prefix
-func CreateAlbum(album dto.Album) {
+func (*dal) CreateAlbum(album dto.Album) {
 	// Add the new album to the slice.
 	albums = append(albums, album)
 }

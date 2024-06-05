@@ -1,24 +1,30 @@
 package controller
 
 import (
+	"context"
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/lsioctl/rest-layered-poc/dto"
-	"github.com/lsioctl/rest-layered-poc/service"
 )
 
 // getAlbums responds with the list of all albums as JSON.
-func GetAlbumList(c *gin.Context) {
-	c.IndentedJSON(http.StatusOK, service.GetAlbumList())
+func (controller *controller) GetAlbumList(c *gin.Context) {
+	c.IndentedJSON(http.StatusOK, controller.service.GetAlbumList())
+}
+
+func printContext(ctx context.Context) {
+	fmt.Println(ctx)
 }
 
 // getAlbumByID locates the album whose ID value matches the id
 // parameter sent by the client, then returns that album as a response.
-func GetAlbumByID(c *gin.Context) {
+func (controller *controller) GetAlbumByID(c *gin.Context) {
+	printContext(c)
 	id := c.Param("id")
 
-	album, err := service.GetAlbumByID(id)
+	album, err := controller.service.GetAlbumByID(id)
 
 	if err != nil {
 		c.IndentedJSON(http.StatusNotFound, gin.H{"message": "album not found"})
@@ -29,7 +35,7 @@ func GetAlbumByID(c *gin.Context) {
 }
 
 // postAlbum adds an album from JSON received in the request body.
-func PostAlbum(c *gin.Context) {
+func (controller *controller) PostAlbum(c *gin.Context) {
 	var newAlbum dto.Album
 
 	// Call BindJSON to bind the received JSON to
@@ -38,7 +44,7 @@ func PostAlbum(c *gin.Context) {
 		return
 	}
 
-	service.CreateAlbum(newAlbum)
+	controller.service.CreateAlbum(newAlbum)
 
 	c.IndentedJSON(http.StatusCreated, newAlbum)
 }
