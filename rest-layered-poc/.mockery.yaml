@@ -1,0 +1,6 @@
+# we want generated files to be in a specific dir and package (mocks)
+inpackage: False
+# we want also mocks to be exported, and _test.go prevent that from happening
+# even with first letter Upercases 
+testonly: False
+with-expecter: True
